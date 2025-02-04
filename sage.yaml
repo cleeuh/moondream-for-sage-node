@@ -1,0 +1,13 @@
+name: "moondream-2"
+version: "0.1.0"
+description: "Moondream 2b with CPU inferencing for Sage nodes"
+keywords: "llm"
+authors: "Christopher Lee, Jason Leigh"
+collaborators: "Laboratory for Advanced Visualization and Applications, Argonne National Laboratory"
+funding: "RAPID Award NSF 2346568"
+license: "MIT"
+homepage: "https://github.com/cleeuh/moondream-for-sage-node"
+source:
+  architectures:
+    - "linux/amd64"
+    - "linux/arm64"

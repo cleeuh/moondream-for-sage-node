@@ -1,0 +1,38 @@
+# for additional pywaggle install options, see: https://github.com/waggle-sensor/pywaggle#installation-guides
+pywaggle[vision]==0.56.0
+
+# Pillow==10.4.0
+Pillow==10.1.0
+
+
+# transformers==4.36.2
+# einops==0.7.0
+# timm==0.9.12
+
+
+# moondream==0.0.5
+
+
+
+# tokenizers==0.15.2
+
+# Python 3.8
+# tokenizers==0.20.1
+# onnx==1.17.0
+# onnxruntime==1.19.2
+
+
+# Python 3.10
+tokenizers==0.20.1
+onnx==1.17.0
+# onnxruntime==1.20.1
+
+
+
+
+
+
+# huggingface-hub==0.20.1
+# accelerate==0.25.0
+# torch==2.1.2
+# torchvision==0.16.2
