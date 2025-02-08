@@ -5,6 +5,7 @@ from waggle.data.vision import Camera
 import numpy as np
 from term_img import *
 import argparse
+import time
 
 
 def resize_image(image, target_size=640):
@@ -99,6 +100,7 @@ def run(args):
             plugin.upload_file("./snapshot.jpg", timestamp=snapshot.timestamp)
 
             if not args.continuous:
+                time.sleep(30)
                 break
 
             # Have to dump the model manually to clear the ram for new inference.  Model loads quickly
