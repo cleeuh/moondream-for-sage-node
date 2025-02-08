@@ -103,7 +103,7 @@ def run(args):
 
             # Have to dump the model manually to clear the ram for new inference.  Model loads quickly
             # so performance wise, its admissible
-            del model
+            # del model
             del encoded_image
             del image
 
