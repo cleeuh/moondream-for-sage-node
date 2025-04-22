@@ -30,9 +30,14 @@ RUN pip3 install numpy==1.26.4
 
 # Model
 RUN wget https://github.com/cleeuh/moondream-for-sage-node/releases/download/resources/moondream-2b-int8.mf -O moondream-2b-int8.mf
+RUN wget https://github.com/cleeuh/moondream-for-sage-node/releases/download/resources/moondream-2b-int4.mf -O moondream-2b-int4.mf
+RUN wget https://github.com/cleeuh/moondream-for-sage-node/releases/download/resources/moondream-0_5b-int8.mf -O moondream-0.5b-int8.mf
+RUN wget https://github.com/cleeuh/moondream-for-sage-node/releases/download/resources/moondream-0_5b-int4.mf -O moondream-0.5b-int4.mf
 
 COPY . .
 
+# Space Reduction
+RUN rm -rf /var/lib/apt/lists/*
 
 # # ENTRYPOINT [ "/usr/bin/bash" ]
 ENTRYPOINT ["python3", "main.py"]

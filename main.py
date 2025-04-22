@@ -51,7 +51,9 @@ def draw_bounding_boxes_on_image(image, boxes):
 
 def run(args):    
     print("loading model")
-    model = md.vl(model="./moondream-2b-int8.mf", load_on_use=args.dynamic_loading)
+    model_int = "int4" if args.int4 else "int8"
+    model_size = "0.5b" if args.small else "2b"
+    model = md.vl(model=f"./moondream-{model_size}-{model_int}.mf", load_on_use=args.dynamic_loading)
 
     with Plugin() as plugin, Camera(args.stream) as camera:
         while True:
@@ -77,23 +79,29 @@ def run(args):
             if len(responses) != 0:
                 plugin.publish("query", str(responses), timestamp=snapshot.timestamp)
 
-            responses = []
-            for query in args.detect:
-                objects = model.detect(encoded_image, query)["objects"]
-                responses.append({"query": query, "objects": objects})
-                print("Objects:", objects)
-                draw_bounding_boxes_on_image(image, objects)
-            if len(responses) != 0:
-                plugin.publish("objects", str(responses), timestamp=snapshot.timestamp)
+            if args.small:
+                for query in args.detect:
+                    print("0.5b Models do not support bounding box detection")
+                for query in args.point:
+                    print("0.5b Models do not support point detection")
+            else:
+                responses = []
+                for query in args.detect:
+                    objects = model.detect(encoded_image, query)["objects"]
+                    responses.append({"query": query, "objects": objects})
+                    print("Objects:", objects)
+                    draw_bounding_boxes_on_image(image, objects)
+                if len(responses) != 0:
+                    plugin.publish("objects", str(responses), timestamp=snapshot.timestamp)
 
-            responses = []
-            for query in args.point:
-                points = model.point(encoded_image, query)["points"]
-                responses.append({"query": query, "points": points})
-                print("Points:", points)
-                draw_points_on_image(image, points)
-            if len(responses) != 0:
-                plugin.publish("points", str(responses), timestamp=snapshot.timestamp)
+                responses = []
+                for query in args.point:
+                    points = model.point(encoded_image, query)["points"]
+                    responses.append({"query": query, "points": points})
+                    print("Points:", points)
+                    draw_points_on_image(image, points)
+                if len(responses) != 0:
+                    plugin.publish("points", str(responses), timestamp=snapshot.timestamp)
 
 
             image.save('./snapshot.jpg')
@@ -117,6 +125,8 @@ def parse_args():
     # parser.add_argument('-sleep', type=int, default=-1, help='Sleep time after inferencing')
     parser.add_argument('--caption', action='store_true', default=False, help='Generate a caption from the model')
     parser.add_argument('--dynamic-loading', action='store_true', default=False, help='Load and unload parts of the model as needed')
+    parser.add_argument('--small', action='store_true', default=False, help='Load the 0.5b model instead of 2b')
+    parser.add_argument('--int4', action='store_true', default=False, help='Use quantized int4 instead of int8')
     parser.add_argument(
         '--query',
         action='append',
